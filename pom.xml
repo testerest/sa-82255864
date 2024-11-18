@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>template</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>template</name>
+	<name>82255864</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -102,4 +102,21 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<!-- lib import용 repo 설정 -->
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/testerest/sa-82255864</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<!-- package publish용 repo 설정 -->
+		<repository>
+			<id>github</id>
+			<name>GitHub testerest Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/testerest/82255864</url>
+		</repository>
+	</distributionManagement>
+	
 </project>
