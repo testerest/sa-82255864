@@ -1,11 +1,11 @@
-apiVersion: kustomize.k8s.io/v1  # 최신 API 버전으로 변경
+apiVersion: kustomize.config.k8s.io/v1beta1  # apiVersion을 v1beta1로 변경
 kind: Kustomization
 namePrefix: prod-
 resources:
   - ../../base
   - pvc.yaml
-patchesStrategicMerge:
-  - deployment.yaml
+patches:
+  - deployment.yaml  # patchesStrategicMerge 대신 patches 사용
   - ingress.yaml
 configMapGenerator:
   - name: "82255864-configmap"
