@@ -5,35 +5,28 @@ metadata:
   namespace: default
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: "82255864"  # Deployment의 selector가 이 label을 사용하여 파드를 선택합니다.
   template:
-    metadata:
-      labels:
-        app: "82255864"  # selector와 일치하는 label을 설정합니다.
     spec:
       containers:
         - name: "82255864"
-          image: "your-docker-image:latest"  # 실제 사용할 Docker 이미지 이름을 넣습니다.
-          command: ["java", "-jar", "/app.jar"]
-          args: ["--spring.config.location=file:/config/application.yml"]  # application.yml을 ConfigMap에서 참조하도록 설정
+          command: ["java","-jar","/app.jar"]
+          args: ["--spring.config.location=file:/config/application.yml"]
           volumeMounts:
-            - mountPath: /mnt/cloud-sample
-              name: "82255864-volume"
-              readOnly: false
-              subPath: cloud-sample
-            - mountPath: /config  # /config 폴더에 application.yml을 마운트
-              name: application-properties
-              readOnly: true
+          - mountPath: /mnt/cloud-sample
+            name: "82255864-volume"
+            readOnly: false
+            subPath: cloud-sample
+          - mountPath: /config
+            name: application-properties
+            readOnly: true
       volumes:
-        - name: "82255864-volume"
-          persistentVolumeClaim:
-            claimName: prod-cepg-aa-std-pvc  # PVC 이름을 정확히 맞추어 설정
-        - name: application-properties
-          configMap:
-            name: "82255864-configmap"  # ConfigMap 이름과 일치
-            items:
-              - key: application.yml
-                path: application.yml  # application.yml 파일을 ConfigMap에서 참조
-            defaultMode: 420
+      - name: "82255864-volume"
+        persistentVolumeClaim:
+          claimName: prod-cepg-aa-std-pvc
+      - name: application-properties
+        configMap:
+          name: "82255864-configmap"
+          items:
+            - key: application.yml
+              path: application.yml
+          defaultMode: 420
