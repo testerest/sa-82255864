@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   name: "82255864-ingress"
 spec:
-  ingressClassName: nginx
+  ingressClassName: ingress-internal
   rules:
-  - host: "*.ce-82255864-sa.kubepia.net"
+  - host: "82255864-prod.cepg-aa.kubepia.net"
     http:
       paths:
       - path: /
