@@ -1,13 +1,21 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "82255864" 
+  name: "82255864"
+  namespace: default
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: "82255864"  # Deployment의 selector가 이 label을 사용하여 파드를 선택합니다.
   template:
+    metadata:
+      labels:
+        app: "82255864"  # selector와 일치하는 label을 설정합니다.
     spec:
       containers:
-        - name: "82255864" 
+        - name: "82255864"
+          image: "your-docker-image:latest"  # 사용할 Docker 이미지를 명시합니다.
           command: ["java","-jar","/app.jar"]
           args: ["--spring.config.location=file:/config/application.yml"]
           volumeMounts:
@@ -18,11 +26,10 @@ spec:
           - mountPath: /config
             name: application-properties
             readOnly: true
-                          
       volumes:
       - name: "82255864-volume"
         persistentVolumeClaim:
-          claimName: cepg-aa-std-pvc
+          claimName: prod-cepg-aa-std-pvc
       - name: application-properties
         configMap:
           name: "82255864-configmap"
