@@ -1,34 +1,39 @@
-spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://ce-82255864-sa-db.postgres.database.azure.com:5432/flexibleserverdb
-    username: ktds
-    password: ktds!1234
-    hikari:
-      maximum-pool-size: 2
-      minimum-idle: 2
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    defer-datasource-initialization: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-  sql:
-    init:
-      # mode: always
-      mode: embedded
-
-server:
-  port: 8080
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-pvc:
-  path: /mnt/cloud-sample
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "82255864"
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "82255864"  # Deployment의 selector가 이 label을 사용하여 파드를 선택합니다.
+  template:
+    metadata:
+      labels:
+        app: "82255864"  # selector와 일치하는 label을 설정합니다.
+    spec:
+      containers:
+        - name: "82255864"
+          image: "your-docker-image:latest"  # 실제 사용할 Docker 이미지 이름을 넣습니다.
+          command: ["java", "-jar", "/app.jar"]
+          args: ["--spring.config.location=file:/config/application.yml"]  # application.yml을 ConfigMap에서 참조하도록 설정
+          volumeMounts:
+            - mountPath: /mnt/cloud-sample
+              name: "82255864-volume"
+              readOnly: false
+              subPath: cloud-sample
+            - mountPath: /config  # /config 폴더에 application.yml을 마운트
+              name: application-properties
+              readOnly: true
+      volumes:
+        - name: "82255864-volume"
+          persistentVolumeClaim:
+            claimName: prod-cepg-aa-std-pvc  # PVC 이름을 정확히 맞추어 설정
+        - name: application-properties
+          configMap:
+            name: "82255864-configmap"  # ConfigMap 이름과 일치
+            items:
+              - key: application.yml
+                path: application.yml  # application.yml 파일을 ConfigMap에서 참조
+            defaultMode: 420
