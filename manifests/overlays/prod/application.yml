@@ -4,9 +4,6 @@ spring:
     url: jdbc:postgresql://ce-82255864-sa-db.postgres.database.azure.com:5432/flexibleserverdb
     username: ktds
     password: ktds!1234
-    hikari:
-      maximum-pool-size: 2
-      minimum-idle: 2
   jpa:
     show-sql: true
     hibernate:
